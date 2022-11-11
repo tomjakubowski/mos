@@ -1,5 +1,5 @@
 <script>
-	import Window from '../lib/Window.svelte';
+	import WindowManager from '../lib/WindowManager.svelte';
 </script>
 
-<Window title="Meowza" --width="300px" />
+<WindowManager />

@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import '98.css/style.css';
 
-	export let title = '';
+	export let title: string = '???';
 
 	function handleClose() {
 		window.alert('close me please');
