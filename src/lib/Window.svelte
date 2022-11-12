@@ -33,7 +33,7 @@
 			{title}
 		</div>
 		<div class="title-bar-controls">
-			<button on:click={handleClose} aria-label="Close" />
+			<button on:mousedown={(e) => e.stopPropagation()} on:click={handleClose} aria-label="Close" />
 		</div>
 	</div>
 	<div class="window-body">
