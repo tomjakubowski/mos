@@ -8,16 +8,28 @@
 	export let title: string = '???';
 	export let winId: number;
 
+	let win: HTMLElement;
+
 	function handleClose() {
 		dispatch('close', {
 			id: winId
 		});
 	}
+
+	function handleTitleDown() {
+		dispatch('grab', { id: winId });
+	}
+
+	function handleTitleUp() {
+		dispatch('ungrab', { id: winId });
+	}
 </script>
 
-<div class="window">
-	<div class="title-bar">
-		<div class="title-bar-text">{title}</div>
+<div class="window" bind:this={win}>
+	<div class="title-bar" on:mousedown={handleTitleDown} on:mouseup={handleTitleUp}>
+		<div class="title-bar-text">
+			{title}
+		</div>
 		<div class="title-bar-controls">
 			<button on:click={handleClose} aria-label="Close" />
 		</div>
