@@ -1,10 +1,17 @@
 <script lang="ts">
 	import '98.css/style.css';
 
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
 	export let title: string = '???';
+	export let winId: number;
 
 	function handleClose() {
-		window.alert('close me please');
+		dispatch('close', {
+			id: winId
+		});
 	}
 </script>
 
@@ -16,16 +23,22 @@
 		</div>
 	</div>
 	<div class="window-body">
-		<img src="http://placekitten.com/300/300" alt="good kitty" />
+		<slot />
 	</div>
 </div>
 
 <style>
 	.window {
 		width: var(--width, 300px);
+		height: var(--height, 300px);
+		/* Parent element has relative positioning */
+		position: absolute;
+		left: var(--x);
+		top: var(--y);
+		user-select: none;
 	}
 
-	.window-body {
-		overflow: scroll;
+	.title-bar {
+		cursor: move;
 	}
 </style>
