@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '98.css/style.css';
+	/* import '98.css/style.css'; */
 
 	import { createEventDispatcher } from 'svelte';
 
