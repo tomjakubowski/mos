@@ -107,7 +107,7 @@
 </script>
 
 <div class="desktop" on:mousemove={desktopMouseMove} on:mouseup={desktopMouseUp}>
-	{#each stack as id, z}};
+	{#each stack as id, z}
 		{@const window = windows[id]}
 		<Window
 			winId={`${id}`}
