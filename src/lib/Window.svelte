@@ -6,9 +6,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let title: string = '???';
-	export let winId: number;
-
-	let win: HTMLElement;
+	export let winId: string;
 
 	function handleClose() {
 		dispatch('close', {
@@ -23,9 +21,13 @@
 	function handleTitleUp() {
 		dispatch('ungrab', { id: winId });
 	}
+
+	function handleWindowDown() {
+		dispatch('raise', { id: winId });
+	}
 </script>
 
-<div class="window" bind:this={win}>
+<div class="window" on:mousedown={handleWindowDown}>
 	<div class="title-bar" on:mousedown={handleTitleDown} on:mouseup={handleTitleUp}>
 		<div class="title-bar-text">
 			{title}
@@ -47,6 +49,7 @@
 		position: absolute;
 		left: var(--x);
 		top: var(--y);
+		z-index: var(--z);
 		user-select: none;
 	}
 

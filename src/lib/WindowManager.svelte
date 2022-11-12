@@ -25,53 +25,56 @@
 		y: number;
 	}
 
-	interface WmState {
-		grabbed: WindowId | null;
+	interface Windows {
+		[id: WindowId]: WindowState;
 	}
 
-	let state: WmState = {
-		grabbed: null
-	};
-
-	// keyed by winId
-	// TODO: consider making this an object, keyed by stringified ID
-	let windows = new Map<WindowId, WindowState>();
+	let windows: Windows = {};
+	let stack: WindowId[] = [];
+	let grabbed: WindowId | null = null;
 
 	function createWindow(props: WindowProps) {
 		let width = props.width || 640;
 		let height = props.height || 480;
 		let [x, y] = [props.x || 0, props.y || 0];
 		let id = generateId();
-		windows.set(id, {
+		windows[id] = {
 			title: props.title,
 			id,
 			width,
 			height,
 			x,
 			y
-		});
+		};
+		stack.push(id);
+		stack = stack;
 	}
 
 	function closeWindow(event: { detail: { id: number } }) {
-		windows.delete(event.detail.id);
-		// Reassignment makes it reactive
+		delete windows[event.detail.id];
 		windows = windows;
 	}
 
 	function grabWindow(event: { detail: { id: WindowId } }) {
-		state.grabbed = event.detail.id;
+		grabbed = event.detail.id;
 	}
 
-	function releaseWindow(event: { detail: { id: WindowId } }) {
-		state.ungrab = event.detail.id;
+	function raiseWindow(event: { detail: { id: WindowId } }) {
+		let id = event.detail.id;
+		let index = stack.indexOf(id);
+		if (index > -1) {
+			stack.splice(index, 1);
+		}
+		stack.push(id);
+		stack = stack;
 	}
 
 	function desktopMouseUp() {
-		state.grabbed = null;
+		grabbed = null;
 	}
 
 	function desktopMouseMove(event: MouseEvent) {
-		let winId = state.grabbed;
+		let winId = grabbed;
 		if (winId != null) {
 			let deltaX = event.movementX;
 			let deltaY = event.movementY;
@@ -84,15 +87,13 @@
 	}
 
 	function moveWindow({ id, x, y }: { id: WindowId; x: number; y: number }) {
-		let win = windows.get(id);
+		let win = windows[id];
 		if (!win) {
 			throw new Error(`window ${id} not found`);
 		}
-		console.log(`${win.x} -> ${x}`);
 		win.x += x;
 		win.y += y;
-		windows.set(id, win);
-		windows = windows;
+		windows[id] = windows[id];
 	}
 
 	createWindow({ title: 'Meowza!', x: 100, y: 500 });
@@ -100,18 +101,21 @@
 </script>
 
 <div class="desktop" on:mousemove={desktopMouseMove} on:mouseup={desktopMouseUp}>
-	{#each [...windows] as [id, window]}
+	{#each stack as id, z}};
+		{@const window = windows[id]}
 		<Window
-			winId={id}
+			winId={`${id}`}
 			title={window.title}
 			on:close={closeWindow}
 			on:grab={grabWindow}
+			on:raise={raiseWindow}
 			--width="{window.width}px"
 			--height="{window.height}px"
 			--x="{window.x}px"
 			--y="{window.y}px"
+			--z={z}
 		>
-			<img src="http://placekitten.com/300/300" alt="good kitty" />
+			<img src="http://placekitten.com/{window.width - 50}/{window.height - 50}" alt="good kitty" />
 		</Window>
 	{/each}
 </div>
