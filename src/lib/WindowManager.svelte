@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Window from './Window.svelte';
 
-	type WindowId = number;
-	let winId: WindowId = 0;
+	type WindowId = string;
+	let lastId: number = 0;
 
-	function generateId() {
-		return winId++;
+	function generateId(): WindowId {
+		return `${lastId++}`;
 	}
 
 	interface WindowProps {
@@ -50,8 +50,14 @@
 		stack = stack;
 	}
 
-	function closeWindow(event: { detail: { id: number } }) {
-		delete windows[event.detail.id];
+	function closeWindow(event: { detail: { id: WindowId } }) {
+		let id = event.detail.id;
+		let index = stack.indexOf(id);
+		if (index > -1) {
+			stack.splice(index, 1);
+		}
+		delete windows[id];
+		stack = stack;
 		windows = windows;
 	}
 
