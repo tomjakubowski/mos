@@ -49,7 +49,6 @@
 		position: absolute;
 		left: var(--x);
 		top: var(--y);
-		z-index: var(--z);
 		user-select: none;
 	}
 
