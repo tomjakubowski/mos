@@ -12,6 +12,7 @@
 	interface WindowProps {
 		title: string;
 		content: any;
+		contentprops: any;
 		width?: number;
 		height?: number;
 		x?: number;
@@ -26,6 +27,7 @@
 		x: number;
 		y: number;
 		content: any;
+		contentprops: any;
 	}
 
 	interface Windows {
@@ -41,6 +43,7 @@
 		let width = props.width || 640;
 		let height = props.height || 480;
 		let content = props.content;
+		let contentprops = props.contentprops;
 		let [x, y] = [props.x || 0, props.y || 0];
 		let id = generateId();
 		windows[id] = {
@@ -50,7 +53,8 @@
 			height,
 			x,
 			y,
-			content
+			content,
+			contentprops
 		};
 		stack.push(id);
 		stack = stack;
@@ -129,8 +133,21 @@
 		windows[id] = windows[id];
 	}
 
-	createWindow({ title: 'Meowza!', x: 100, y: 500, content: Cat });
-	createWindow({ title: 'Meowza2!', x: 260, y: 40, width: 400, content: Cat });
+	createWindow({
+		title: 'Meowza!',
+		x: 100,
+		y: 500,
+		content: Cat,
+		contentprops: { cat: 15, width: 640, height: 480 }
+	});
+	createWindow({
+		title: 'Meowzaaaaa!',
+		x: 260,
+		y: 40,
+		width: 400,
+		content: Cat,
+		contentprops: { cat: 10, width: 800, height: 600 }
+	});
 </script>
 
 <div class="desktop" on:mousemove={desktopMouseMove} on:mouseup={desktopMouseUp}>
@@ -149,7 +166,7 @@
 			--y="{window.y}px"
 			--z={z}
 		>
-			<svelte:component this={window.content} />
+			<svelte:component this={window.content} {...window.contentprops} />
 		</Window>
 	{/each}
 </div>
