@@ -145,7 +145,7 @@
 		>
 			<img
 				style="display: block"
-				src="http://placekitten.com/300/300?image={id}"
+				src="http://placekitten.com/600/600?image={id}"
 				alt="good kitty"
 			/>
 		</Window>

@@ -59,6 +59,7 @@
 		top: var(--y);
 		user-select: none;
 		overflow: hidden;
+		box-sizing: border-box;
 	}
 
 	.title-bar {
@@ -73,7 +74,8 @@
 	}
 
 	.window-body {
-		overflow: hidden;
+		overflow: auto;
+		max-height: calc(var(--height) - 40px);
 	}
 
 	.se {
