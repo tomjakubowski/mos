@@ -3,12 +3,9 @@
 	import { files } from './filestore';
 	import reglInit from 'regl';
 	let canvas: HTMLCanvasElement;
+	let regl: any;
 
-	onMount(() => {
-		let gl = canvas.getContext('webgl')!;
-		let regl = reglInit({
-			gl
-		});
+	function reload() {
 		const drawTriangle = regl({
 			frag: $files['frag.glsl'],
 			vert: $files['vert.glsl'],
@@ -25,10 +22,18 @@
 		});
 
 		drawTriangle();
+	}
+
+	onMount(() => {
+		let gl = canvas.getContext('webgl')!;
+		regl = reglInit({
+			gl
+		});
+		reload();
 	});
 </script>
 
-<div class="container">
+<div class="container" on:dblclick={reload}>
 	<canvas class="canvas" bind:this={canvas} />
 </div>
 
