@@ -3,6 +3,7 @@
 	import Cat from './Cat.svelte';
 	import Notepad from './Notepad.svelte';
 	import Shadertoy from './Shadertoy.svelte';
+	import { files } from './filestore';
 
 	type WindowId = string;
 	let lastId: number = 0;
@@ -158,10 +159,22 @@
 		content: Shadertoy
 	});
 	createWindow({
-		title: 'NOTEPAD.EXE',
-		x: 700,
-		y: 400,
-		content: Notepad
+		title: 'vert.glsl - Notepad',
+		x: 300,
+		y: 150,
+		width: 400,
+		height: 150,
+		content: Notepad,
+		contentprops: { file: 'vert.glsl' }
+	});
+	createWindow({
+		title: 'frag.glsl - Notepad',
+		x: 100,
+		y: 100,
+		width: 400,
+		height: 150,
+		content: Notepad,
+		contentprops: { file: 'frag.glsl' }
 	});
 </script>
 

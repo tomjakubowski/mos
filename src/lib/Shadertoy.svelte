@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { files } from './filestore';
 	import reglInit from 'regl';
-	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
 
 	onMount(() => {
@@ -10,16 +10,8 @@
 			gl
 		});
 		const drawTriangle = regl({
-			frag: `
-  void main() {
-    gl_FragColor = vec4(1, 0, 0, 1);
-  }`,
-
-			vert: `
-  attribute vec2 position;
-  void main() {
-    gl_Position = vec4(position, 0, 1);
-  }`,
+			frag: $files['frag.glsl'],
+			vert: $files['vert.glsl'],
 
 			attributes: {
 				position: [
@@ -36,7 +28,7 @@
 	});
 </script>
 
-<div class="container" bind:this={container}>
+<div class="container">
 	<canvas class="canvas" bind:this={canvas} />
 </div>
 
