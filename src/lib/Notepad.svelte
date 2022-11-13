@@ -15,5 +15,9 @@
 		color: black;
 
 		resize: none;
+
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow-x: scroll;
 	}
 </style>
