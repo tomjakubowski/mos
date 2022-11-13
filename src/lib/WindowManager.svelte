@@ -129,11 +129,12 @@
 </script>
 
 <div class="desktop" on:mousemove={desktopMouseMove} on:mouseup={desktopMouseUp}>
-	{#each stack as id, z}
+	{#each stack as id, index}
 		{@const window = windows[id]}
 		<Window
 			winId={`${id}`}
 			title={window.title}
+			active={index == stack.length - 1}
 			on:close={closeWindow}
 			on:grab={grabWindow}
 			on:raise={raiseWindow}
@@ -141,7 +142,6 @@
 			--height="{window.height}px"
 			--x="{window.x}px"
 			--y="{window.y}px"
-			--z={z}
 		>
 			<img
 				style="display: block"

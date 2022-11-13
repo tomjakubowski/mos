@@ -7,6 +7,7 @@
 
 	export let title: string = '???';
 	export let winId: string;
+	export let active: boolean = false;
 
 	function handleClose() {
 		dispatch('close', {
@@ -35,7 +36,11 @@
 </script>
 
 <div class="window" on:mousedown={handleWindowDown}>
-	<div class="title-bar" on:mousedown={handleTitleDown} on:mouseup={handleTitleUp}>
+	<div
+		class="title-bar {active ? '' : 'inactive'}"
+		on:mousedown={handleTitleDown}
+		on:mouseup={handleTitleUp}
+	>
 		<div class="title-bar-text">
 			{title}
 		</div>
