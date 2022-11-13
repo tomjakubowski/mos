@@ -65,6 +65,7 @@
 		user-select: none;
 		overflow: hidden;
 		box-sizing: border-box;
+		z-index: var(--z);
 	}
 
 	.title-bar {
