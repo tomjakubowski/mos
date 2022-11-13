@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Window from './Window.svelte';
 	import Cat from './Cat.svelte';
+	import Shadertoy from './Shadertoy.svelte';
 
 	type WindowId = string;
 	let lastId: number = 0;
@@ -12,7 +13,7 @@
 	interface WindowProps {
 		title: string;
 		content: any;
-		contentprops: any;
+		contentprops?: any;
 		width?: number;
 		height?: number;
 		x?: number;
@@ -43,7 +44,7 @@
 		let width = props.width || 640;
 		let height = props.height || 480;
 		let content = props.content;
-		let contentprops = props.contentprops;
+		let contentprops = props.contentprops || {};
 		let [x, y] = [props.x || 0, props.y || 0];
 		let id = generateId();
 		windows[id] = {
@@ -141,12 +142,19 @@
 		contentprops: { cat: 15, width: 640, height: 480 }
 	});
 	createWindow({
-		title: 'Meowzaaaaa!',
+		title: 'Meeoowzaa!',
 		x: 260,
 		y: 40,
 		width: 400,
 		content: Cat,
 		contentprops: { cat: 10, width: 800, height: 600 }
+	});
+	createWindow({
+		title: 'triangle',
+		x: 460,
+		y: 300,
+		width: 400,
+		content: Shadertoy
 	});
 </script>
 

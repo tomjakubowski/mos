@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"98.css": "^0.1.18"
+		"98.css": "^0.1.18",
+		"regl": "^2.1.0"
 	}
 }
