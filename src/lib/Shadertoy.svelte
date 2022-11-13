@@ -18,10 +18,22 @@
 				]
 			},
 
+			uniforms: {
+				iTime: regl.prop('time')
+			},
+
 			count: 3
 		});
 
-		drawTriangle();
+		regl.frame(({ time }: { time: any }) => {
+			regl.clear({
+				color: [0, 0, 0, 0],
+				depth: 1
+			});
+			drawTriangle({
+				time: time
+			});
+		});
 	}
 
 	onMount(() => {
