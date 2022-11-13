@@ -81,7 +81,8 @@
 
 	.window-body {
 		overflow: auto;
-		max-height: calc(var(--height) - 40px);
+		height: calc(var(--height) - 40px);
+		box-sizing: border-box;
 	}
 
 	.se {

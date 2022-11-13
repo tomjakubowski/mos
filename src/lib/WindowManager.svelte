@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Window from './Window.svelte';
 	import Cat from './Cat.svelte';
+	import Notepad from './Notepad.svelte';
 	import Shadertoy from './Shadertoy.svelte';
 
 	type WindowId = string;
@@ -155,6 +156,12 @@
 		y: 300,
 		width: 400,
 		content: Shadertoy
+	});
+	createWindow({
+		title: 'NOTEPAD.EXE',
+		x: 700,
+		y: 400,
+		content: Notepad
 	});
 </script>
 
