@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Window from './Window.svelte';
+	import Cat from './Cat.svelte';
 
 	type WindowId = string;
 	let lastId: number = 0;
@@ -10,6 +11,7 @@
 
 	interface WindowProps {
 		title: string;
+		content: any;
 		width?: number;
 		height?: number;
 		x?: number;
@@ -23,6 +25,7 @@
 		height: number;
 		x: number;
 		y: number;
+		content: any;
 	}
 
 	interface Windows {
@@ -37,6 +40,7 @@
 	function createWindow(props: WindowProps) {
 		let width = props.width || 640;
 		let height = props.height || 480;
+		let content = props.content;
 		let [x, y] = [props.x || 0, props.y || 0];
 		let id = generateId();
 		windows[id] = {
@@ -45,7 +49,8 @@
 			width,
 			height,
 			x,
-			y
+			y,
+			content
 		};
 		stack.push(id);
 		stack = stack;
@@ -124,8 +129,8 @@
 		windows[id] = windows[id];
 	}
 
-	createWindow({ title: 'Meowza!', x: 100, y: 500 });
-	createWindow({ title: 'Meowza2!', x: 260, y: 40, width: 400 });
+	createWindow({ title: 'Meowza!', x: 100, y: 500, content: Cat });
+	createWindow({ title: 'Meowza2!', x: 260, y: 40, width: 400, content: Cat });
 </script>
 
 <div class="desktop" on:mousemove={desktopMouseMove} on:mouseup={desktopMouseUp}>
@@ -144,11 +149,7 @@
 			--y="{window.y}px"
 			--z={z}
 		>
-			<img
-				style="display: block"
-				src="http://placekitten.com/600/600?image={id}"
-				alt="good kitty"
-			/>
+			<svelte:component this={window.content} />
 		</Window>
 	{/each}
 </div>
