@@ -32,6 +32,7 @@
 	let windows: Windows = {};
 	let stack: WindowId[] = [];
 	let grabbed: WindowId | null = null;
+	let grabkind: 'resize' | 'move' | null = null;
 
 	function createWindow(props: WindowProps) {
 		let width = props.width || 640;
@@ -61,8 +62,9 @@
 		windows = windows;
 	}
 
-	function grabWindow(event: { detail: { id: WindowId } }) {
+	function grabWindow(event: { detail: { id: WindowId; kind: 'move' | 'resize' } }) {
 		grabbed = event.detail.id;
+		grabkind = event.detail.kind;
 	}
 
 	function raiseWindow(event: { detail: { id: WindowId } }) {
@@ -77,14 +79,24 @@
 
 	function desktopMouseUp() {
 		grabbed = null;
+		grabkind = null;
 	}
 
 	function desktopMouseMove(event: MouseEvent) {
 		let winId = grabbed;
-		if (winId != null) {
-			let deltaX = event.movementX;
-			let deltaY = event.movementY;
+		if (winId == null) {
+			return;
+		}
+		let deltaX = event.movementX;
+		let deltaY = event.movementY;
+		if (grabkind == 'move') {
 			moveWindow({
+				id: winId,
+				x: deltaX,
+				y: deltaY
+			});
+		} else if (grabkind == 'resize') {
+			resizeWindow({
 				id: winId,
 				x: deltaX,
 				y: deltaY
@@ -99,6 +111,16 @@
 		}
 		win.x += x;
 		win.y += y;
+		windows[id] = windows[id];
+	}
+
+	function resizeWindow({ id, x, y }: { id: WindowId; x: number; y: number }) {
+		let win = windows[id];
+		if (!win) {
+			throw new Error(`window ${id} not found`);
+		}
+		win.width += x;
+		win.height += y;
 		windows[id] = windows[id];
 	}
 
@@ -121,7 +143,11 @@
 			--y="{window.y}px"
 			--z={z}
 		>
-			<img src="http://placekitten.com/{window.width - 50}/{window.height - 50}" alt="good kitty" />
+			<img
+				style="display: block"
+				src="http://placekitten.com/300/300?image={id}"
+				alt="good kitty"
+			/>
 		</Window>
 	{/each}
 </div>

@@ -15,7 +15,7 @@
 	}
 
 	function handleTitleDown() {
-		dispatch('grab', { id: winId });
+		dispatch('grab', { id: winId, kind: 'move' });
 	}
 
 	function handleTitleUp() {
@@ -24,6 +24,13 @@
 
 	function handleWindowDown() {
 		dispatch('raise', { id: winId });
+	}
+
+	function startResize() {
+		dispatch('grab', { id: winId, kind: 'resize' });
+	}
+	function endResize() {
+		dispatch('ungrab', { id: winId });
 	}
 </script>
 
@@ -39,6 +46,7 @@
 	<div class="window-body">
 		<slot />
 	</div>
+	<div class="resize-corner se" on:mousedown={startResize} on:mouseup={endResize} />
 </div>
 
 <style>
@@ -50,9 +58,27 @@
 		left: var(--x);
 		top: var(--y);
 		user-select: none;
+		overflow: hidden;
 	}
 
 	.title-bar {
 		cursor: move;
+	}
+
+	.resize-corner {
+		position: absolute;
+		width: 4px;
+		height: 4px;
+		background-color: red;
+	}
+
+	.window-body {
+		overflow: hidden;
+	}
+
+	.se {
+		right: 0;
+		bottom: 0;
+		cursor: nwse-resize;
 	}
 </style>
